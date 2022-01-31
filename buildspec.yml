@@ -15,3 +15,5 @@ phases:
     commands:
       - docker images
       - docker push $REPOSITORY_URI:latest
+artifacts:
+  files: 'container.tar' 
