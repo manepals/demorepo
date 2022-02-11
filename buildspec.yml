@@ -8,6 +8,7 @@ phases:
       - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
   pre_build:
     commands:
+      - echo "in pre-build stage"
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:latest
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
