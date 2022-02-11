@@ -1,12 +1,19 @@
-FROM public.ecr.aws/docker/library/python:latest
-WORKDIR /usr/src/app
+# Base Image - Official Alpine
+FROM alpine
 
-RUN apt-get update
-# RUN yum -y update && yum clean all
+# Upgrade existing packages in the base image
+RUN apk --no-cache upgrade
 
-COPY requirements.txt ./
-ADD helloworld.py ./
-RUN pip install --no-cache-dir -r requirements.txt
+# Install apache from packages with out caching install files
+RUN apk add --no-cache apache2
+
+# Creat directory for apache2 to store PID file
+RUN mkdir /run/apache2
+
+# Open port for httpd access
 EXPOSE 80
 
-CMD [ "python", "helloworld.py" ]
+CMD ["-D","FOREGROUND"]
+
+# Srart httpd when container runs
+ENTRYPOINT ["/usr/sbin/httpd"]
